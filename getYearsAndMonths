@@ -1,0 +1,104 @@
+/*
+ClassTest vTest = new ClassTest();
+#region Initial Values
+vTest.initialDate = new DateTime(2017, 4, 20);
+vTest.endDate = new DateTime(2018, 7, 15);
+#endregion
+vTest.listYear = Methods.GetListYear(vTest.initialDate, vTest.endDate);
+vTest.listYearMonth = Methods.GetListYearMonth(vTest.initialDate, vTest.endDate, vTest.listYear);
+Console.WriteLine("Fecha Inicial: " + vTest.initialDate.ToShortDateString());
+Console.WriteLine("Fecha Final: " + vTest.endDate.ToShortDateString());
+foreach (var item in vTest.listYearMonth)
+{
+    Console.WriteLine("Año: " + item.year);
+    Console.WriteLine("Meses");
+    foreach (var month in item.monthList)
+    {
+        Console.WriteLine(month);
+    }
+}
+Console.ReadLine();
+*/
+
+namespace CEM.CodeTest.Consola
+{
+    public class ClassTest
+    {
+        public DateTime initialDate { get; set; }
+        public DateTime endDate { get; set; }
+        public List<int> listYear { get; set; }
+        public List<ClassYearMonth> listYearMonth { get; set; }
+    }
+
+    public class ClassYearMonth
+    {
+        public int year { get; set; }
+        public List<int> monthList { get; set; }
+    }
+}
+
+namespace CEM.CodeTest.Consola
+{
+    public class Methods
+    {
+
+        public static List<int> GetListYear(DateTime initialDate, DateTime endDate)
+        {
+            List<int> vlistYear = new List<int>();
+            int vendYear = endDate.Year;
+            int vinitalYear = initialDate.Year;
+            for (int i = vinitalYear; i <= vendYear; i++)
+            {
+                vlistYear.Add(i);
+            }
+            return vlistYear;
+        }
+
+        public static List<ClassYearMonth> GetListYearMonth(DateTime initialDate, DateTime endDate, List<int> listYear)
+        {
+            List<ClassYearMonth> vlistYearMonth = new List<ClassYearMonth>();
+            if (endDate.Year == initialDate.Year)
+            {
+                ClassYearMonth vyearMonth = new ClassYearMonth();
+                vyearMonth.year = initialDate.Year;
+                vyearMonth.monthList = GetListMonth(initialDate, endDate);
+                vlistYearMonth.Add(vyearMonth);
+            }
+            else
+            {
+                foreach (var year in listYear)
+                {
+                    ClassYearMonth vyearMonth = new ClassYearMonth();
+                    vyearMonth.year = year;
+                    if (initialDate.Year == year)
+                    {
+                        vyearMonth.monthList = GetListMonth(initialDate, new DateTime(year, 12, 1));
+                    }
+                    else if (endDate.Year == year)
+                    {
+                        vyearMonth.monthList = GetListMonth(new DateTime(year, 1, 1), endDate);
+                    }
+                    else
+                    {
+                        vyearMonth.monthList = GetListMonth(new DateTime(year, 1, 1), new DateTime(year, 12, 1));
+                    }
+                    vlistYearMonth.Add(vyearMonth);
+                }
+            }
+            return vlistYearMonth;
+        }
+
+        public virtual List<int> GetListMonth(DateTime initialDate, DateTime endDate)
+        {
+            List<int> vlistMonth = new List<int>();
+
+            if (initialDate > endDate) return GetListMonth(endDate, initialDate);
+            for (int i = initialDate.Month; i <= endDate.Month; i++)
+            {
+                vlistMonth.Add(i);
+            }
+
+            return vlistMonth;
+        }
+    }
+}
