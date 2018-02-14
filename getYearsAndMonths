@@ -1,11 +1,10 @@
 /*
 ClassTest vTest = new ClassTest();
 #region Initial Values
-vTest.initialDate = new DateTime(2017, 4, 20);
+vTest.initialDate = new DateTime(2016, 10, 31);
 vTest.endDate = new DateTime(2018, 7, 15);
 #endregion
-vTest.listYear = Methods.GetListYear(vTest.initialDate, vTest.endDate);
-vTest.listYearMonth = Methods.GetListYearMonth(vTest.initialDate, vTest.endDate, vTest.listYear);
+vTest.listYearMonth = Methods.GetListYearMonth(vTest.initialDate, vTest.endDate);
 Console.WriteLine("Fecha Inicial: " + vTest.initialDate.ToShortDateString());
 Console.WriteLine("Fecha Final: " + vTest.endDate.ToShortDateString());
 foreach (var item in vTest.listYearMonth)
@@ -26,7 +25,6 @@ namespace CEM.CodeTest.Consola
     {
         public DateTime initialDate { get; set; }
         public DateTime endDate { get; set; }
-        public List<int> listYear { get; set; }
         public List<ClassYearMonth> listYearMonth { get; set; }
     }
 
@@ -35,27 +33,16 @@ namespace CEM.CodeTest.Consola
         public int year { get; set; }
         public List<int> monthList { get; set; }
     }
+
 }
 
 namespace CEM.CodeTest.Consola
 {
     public class Methods
     {
-
-        public static List<int> GetListYear(DateTime initialDate, DateTime endDate)
+        public static List<ClassYearMonth> GetListYearMonth(DateTime initialDate, DateTime endDate)
         {
-            List<int> vlistYear = new List<int>();
-            int vendYear = endDate.Year;
-            int vinitalYear = initialDate.Year;
-            for (int i = vinitalYear; i <= vendYear; i++)
-            {
-                vlistYear.Add(i);
-            }
-            return vlistYear;
-        }
-
-        public static List<ClassYearMonth> GetListYearMonth(DateTime initialDate, DateTime endDate, List<int> listYear)
-        {
+            List<int> listYear = GetListYear(initialDate, endDate);
             List<ClassYearMonth> vlistYearMonth = new List<ClassYearMonth>();
             if (endDate.Year == initialDate.Year)
             {
@@ -88,16 +75,26 @@ namespace CEM.CodeTest.Consola
             return vlistYearMonth;
         }
 
-        public virtual List<int> GetListMonth(DateTime initialDate, DateTime endDate)
+        public static List<int> GetListYear(DateTime initialDate, DateTime endDate)
+        {
+            List<int> vlistYear = new List<int>();
+            int vendYear = endDate.Year;
+            int vinitalYear = initialDate.Year;
+            for (int i = vinitalYear; i <= vendYear; i++)
+            {
+                vlistYear.Add(i);
+            }
+            return vlistYear;
+        }
+
+        public static List<int> GetListMonth(DateTime initialDate, DateTime endDate)
         {
             List<int> vlistMonth = new List<int>();
-
             if (initialDate > endDate) return GetListMonth(endDate, initialDate);
             for (int i = initialDate.Month; i <= endDate.Month; i++)
             {
                 vlistMonth.Add(i);
             }
-
             return vlistMonth;
         }
     }
